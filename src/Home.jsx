@@ -2,7 +2,14 @@ import React from 'react';
 
 function Home() {
     return (
-        <h2>Welcome!</h2>
+        <>
+            <br>
+
+            </br>
+            <br>
+            </br>
+            <p>This is a simple application for managing customers and their trainings.</p>
+        </>
     );
 }
 

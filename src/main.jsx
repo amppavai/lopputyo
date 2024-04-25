@@ -6,8 +6,8 @@ import './App.css'
 import App from './App.jsx'
 import Home from './Home.jsx'
 import Error from './Error.jsx'
-import Customers from './Customers.jsx'
-import Trainings from './Trainings.jsx'
+import Customers from './components/Customers.jsx'
+import Trainings from './components/Trainings.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const router = createBrowserRouter([

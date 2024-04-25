@@ -15,30 +15,13 @@ export default function Trainings() {
 
     //column definitions
     const [colDefs, setColDefs] = useState([
-        { field: 'date', sortable: true, filter: true },
-        { field: 'duration', sortable: true, filter: true },
-        { field: 'activity', sortable: true, filter: true },
-        { field: 'customer', sortable: true, filter: true }
+        { field: 'date', sortable: true, filter: true, flex: 1 },
+        { field: 'duration', sortable: true, filter: true, flex: 1 },
+        { field: 'activity', sortable: true, filter: true, flex: 1 },
+        { field: 'customer', sortable: true, filter: true, flex: 1 }
     ]);
 
     useEffect(() => getTrainings(), []);
-
-    //hae treenit, getTrainings
-    /*     const getTrainings = () => {
-            fetch(URL, { method: 'GET' })
-                .then(response => {
-                    console.log(response);
-                    return response.json();
-                })
-                .then(responsedata => {
-                    const formattedTrainings = responsedata._embedded.trainings.map(trainings => ({
-                        ...trainings,
-                        date: dayjs(trainings.date).format('DD.MM.YYYY HH:MM'), // Muotoile päivämäärä tässä
-                    }));
-                    setTrainings(formattedTrainings);
-                })
-                .catch(error => console.error(error));
-        } */
 
     const getTrainings = () => {
         fetch(URL, { method: 'GET' })
@@ -56,6 +39,7 @@ export default function Trainings() {
 
     const fetchCustomerNames = (trainings) => {
         trainings.forEach(training => {
+            //GET -pyyntö jokaisen training-objektin sisältämän asiakkaan URL-osoitteeseen
             fetch(training._links.customer.href, { method: 'GET' })
                 .then(response => response.json())
                 .then(customerData => {
@@ -71,7 +55,7 @@ export default function Trainings() {
 
     return (
         <>
-            <div className="ag-theme-material" style={{ width: 700, height: 500 }}>
+            <div className="ag-theme-material" style={{ width: '100%', height: '600px' }}>
                 <AgGridReact
                     rowData={trainings}
                     columnDefs={colDefs}
