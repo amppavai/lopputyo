@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
-import { Snackbar } from '@mui/material';
+import { Button, Snackbar } from '@mui/material';
 import AddCustomer from './AddCustomer';
 import EditCustomer from './EditCustomer';
 
@@ -23,8 +23,8 @@ export default function Customers() {
         { field: 'city', sortable: true, filter: true, flex: 1 },
         { field: 'email', sortable: true, filter: true, flex: 1 },
         { field: 'phone', sortable: true, filter: true, flex: 1 },
-        { cellRenderer: params => <EditCustomer editCustomer={editCustomer} customer={params.data} link={params.data._links.self.href} /> },
-        //{cellRenderer: (params) => <Button onClick={() => deleteCustomer(params.data._links.self.href)}>Delete</Button>}
+        { cellRenderer: params => <EditCustomer editCustomer={editCustomer} customer={params.data} link={params.data._links.self.href} /> , flex: 1.2 },
+        { cellRenderer: (params) => <Button color="error" onClick={() => deleteCustomer(params.data._links.self.href)}>Delete</Button>, flex: 1.2 }
     ]);
 
     useEffect(() => getCustomers(), []);
@@ -89,11 +89,29 @@ export default function Customers() {
             .catch(err => console.error(err));
     }
 
+    //poista asiakas, deleteCustomer
+    const deleteCustomer = (link) => {
+        if (window.confirm('Are you sure you want to delete this customer?')) {
+            fetch(link, { method: 'DELETE' })
+                .then(response => {
+                    if (response.ok) {
+                        setSnackbarMessage("Customer deleted succesfully");
+                        setOpenSnackbar(true);
+                        getCustomers();
+                    } else {
+                        setSnackbarMessage("Error with deleting customer");
+                        setOpenSnackbar(true);
+                    }
+                })
+                .catch(error => console.error(error));
+        }
+    }
+
     return (
         <>
             <br></br>
             <AddCustomer addCustomer={addCustomer} />
-            <div className="ag-theme-material" style={{ width: '100%', height: '600px' }}>
+            <div className="ag-theme-material" style={{ width: '100%', height: '550px' }}>
                 <AgGridReact
                     rowData={customers}
                     columnDefs={colDefs}

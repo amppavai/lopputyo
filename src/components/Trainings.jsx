@@ -55,7 +55,7 @@ export default function Trainings() {
 
     return (
         <>
-            <div className="ag-theme-material" style={{ width: '100%', height: '600px' }}>
+            <div className="ag-theme-material" style={{ width: '100%', height: '550px' }}>
                 <AgGridReact
                     rowData={trainings}
                     columnDefs={colDefs}

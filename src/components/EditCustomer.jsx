@@ -90,8 +90,8 @@ export default function EditCustomer(props) {
                     </TextField>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleSave}>Save</Button>
-                    <Button onClick={handleCancel}>Cancel</Button>
+                    <Button variant="outlined" color="primary" onClick={handleSave}>Save</Button>
+                    <Button variant="outlined" color="secondary"onClick={handleCancel}>Cancel</Button>
                 </DialogActions>
             </Dialog >
 
