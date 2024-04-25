@@ -2,8 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
-import AddCustomer from './AddCustomer';
 import { Snackbar } from '@mui/material';
+import AddCustomer from './AddCustomer';
+import EditCustomer from './EditCustomer';
 
 export default function Customers() {
 
@@ -21,7 +22,9 @@ export default function Customers() {
         { field: 'postcode', sortable: true, filter: true, flex: 1 },
         { field: 'city', sortable: true, filter: true, flex: 1 },
         { field: 'email', sortable: true, filter: true, flex: 1 },
-        { field: 'phone', sortable: true, filter: true, flex: 1 }
+        { field: 'phone', sortable: true, filter: true, flex: 1 },
+        { cellRenderer: params => <EditCustomer editCustomer={editCustomer} customer={params.data} link={params.data._links.self.href} /> },
+        //{cellRenderer: (params) => <Button onClick={() => deleteCustomer(params.data._links.self.href)}>Delete</Button>}
     ]);
 
     useEffect(() => getCustomers(), []);
@@ -54,6 +57,29 @@ export default function Customers() {
                     return response.json;
                 } else {
                     throw new Error('Error with adding customer');
+                }
+            })
+            .then(data => {
+                console.log("parsed json = " + data);
+                getCustomers();
+            })
+            .catch(err => console.error(err));
+    }
+
+    //muokkaa asiakkaan tietoja, editCustomer
+    const editCustomer = (link, customer) => {
+        fetch(link, {
+            method: 'PUT',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify(customer)
+        })
+            .then(response => {
+                if (response.ok) {
+                    setSnackbarMessage('Customer edited succesfully');
+                    setOpen(true);
+                    return response.json;
+                } else {
+                    throw new Error('Error with editing customer');
                 }
             })
             .then(data => {
