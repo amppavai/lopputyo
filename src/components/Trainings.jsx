@@ -126,7 +126,7 @@ export default function Trainings() {
                 <Snackbar
                     open={openSnackbar}
                     message={snackbarMessage}
-                    autoHideDuration={3000}
+                    autoHideDuration={300000}
                     onClose={() => {
                         setOpenSnackbar(false);
                         setSnackbarMessage('');

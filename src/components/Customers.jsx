@@ -5,6 +5,7 @@ import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button, Snackbar } from '@mui/material';
 import AddCustomer from './AddCustomer';
 import EditCustomer from './EditCustomer';
+import { CSVLink } from 'react-csv'; //https://www.youtube.com/watch?v=jtvCmFVlh1I
 
 export default function Customers() {
 
@@ -23,8 +24,22 @@ export default function Customers() {
         { field: 'city', sortable: true, filter: true, flex: 1 },
         { field: 'email', sortable: true, filter: true, flex: 1 },
         { field: 'phone', sortable: true, filter: true, flex: 1 },
-        { cellRenderer: params => <EditCustomer editCustomer={editCustomer} customer={params.data} link={params.data._links.self.href} /> , flex: 1.2 },
-        { cellRenderer: (params) => <Button color="error" onClick={() => deleteCustomer(params.data._links.self.href)}>Delete</Button>, flex: 1.2 }
+        { cellRenderer: params => <EditCustomer editCustomer={editCustomer} customer={params.data} link={params.data._links.self.href} />, flex: 1.2 },
+        { cellRenderer: (params) => <Button color="error" onClick={() => deleteCustomer(params.data._links.self.href)}>Delete</Button>, flex: 1.2 },
+        { //yksittäisen asiaakkaan tiedot csv-muodossa
+            cellRenderer: params => {
+                const customerData = {
+                    firstname: params.data.firstname,
+                    lastname: params.data.lastname,
+                    streetaddress: params.data.streetaddress,
+                    postcode: params.data.postcode,
+                    city: params.data.city,
+                    email: params.data.email,
+                    phone: params.data.phone
+                };
+                return <CSVLink data={[customerData]} filename="customer_data.csv">Download CSV</CSVLink>
+            }, flex: 1.2
+        }
     ]);
 
     useEffect(() => getCustomers(), []);
@@ -106,6 +121,18 @@ export default function Customers() {
                 .catch(error => console.error(error));
         }
     }
+    //asiakkaat csv-muodossa
+    const csvData = customers.map(customer => {
+        return {
+            firstname: customer.firstname,
+            lastname: customer.lastname,
+            streetaddress: customer.streetaddress,
+            postcode: customer.postcode,
+            city: customer.city,
+            email: customer.email,
+            phone: customer.phone
+        }
+    });
 
     return (
         <>
@@ -133,6 +160,7 @@ export default function Customers() {
                         setSnackbarMessage('');
                     }}
                 ></Snackbar>
+                <CSVLink data={csvData} filename="customers.csv">Download CSV with all customer data</CSVLink>
             </div>
         </>
     );

@@ -6,6 +6,7 @@ function Home() {
             <br>
 
             </br>
+            <h2>Welcome!</h2>
             <br>
             </br>
             <p>This is a simple application for managing customers and their trainings.</p>
