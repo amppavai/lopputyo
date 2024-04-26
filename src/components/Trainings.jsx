@@ -66,7 +66,7 @@ export default function Trainings() {
         });
     }
 
-    //lisää treeni, addTraining
+    //lisää treeni, addTraining -> AddTraining.jsx
     const addTraining = (training) => {
         fetch(URL, {
             method: 'POST',

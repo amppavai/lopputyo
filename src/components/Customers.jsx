@@ -5,7 +5,7 @@ import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button, Snackbar } from '@mui/material';
 import AddCustomer from './AddCustomer';
 import EditCustomer from './EditCustomer';
-import { CSVLink } from 'react-csv'; //https://www.youtube.com/watch?v=jtvCmFVlh1I
+import { CSVLink } from 'react-csv';
 
 export default function Customers() {
 

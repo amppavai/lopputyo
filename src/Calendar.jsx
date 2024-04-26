@@ -31,7 +31,13 @@ export default function Calendar() {
             .catch(error => console.error(error));
     } */
 
+
     
+
+    //TUPLABOOKKAUKSET, tarkista
+
+
+
 
     const fetchBookedTrainings = () => {
     fetch('https://customerrestservice-personaltraining.rahtiapp.fi/api/trainings', { method: 'GET' })

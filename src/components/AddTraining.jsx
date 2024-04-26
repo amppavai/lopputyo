@@ -13,10 +13,11 @@ export default function AddTraining({ addTraining }) {
         customer: ''
     });
 
+    //asiakkaan liittäminen treeniin
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [customerUrl, setCustomerUrl] = useState('');
-    const [customers, setCustomers] = useState([{}]);
+    const [customers, setCustomers] = useState([]);
 
     //dialogin tila
     const [open, setOpen] = React.useState(false);
@@ -34,7 +35,7 @@ export default function AddTraining({ addTraining }) {
                 return response.json();
             })
             .then(data => {
-                //etsitään asiakas, jolla on haetut etu- ja sukunimet
+                //etsitään asiakas, jolla on annetut etu- ja sukunimet
                 const matchingCustomers = data._embedded.customers.filter(customer =>
                     //vertaillaan pienillä kirjaimilla, jotta vertailu ei ole case-sensitive
                     customer.firstname.toLowerCase() === firstName.toLowerCase() &&
@@ -63,16 +64,23 @@ export default function AddTraining({ addTraining }) {
     }, [firstName, lastName]);
 
     const handleSave = () => {
-        //muodostetaan uusi treeni-objekti
-        const formattedTraining = {
-            //muutetaan päivämäärä ISO-muotoon
-            date: dayjs(newTraining.date, 'YYYY-MM-DDTHH:mm').toISOString(),
-            duration: newTraining.duration,
-            activity: newTraining.activity,
-            customer: customerUrl
-        };
-        addTraining(formattedTraining);
-        setOpen(false);
+        //tarkistetaan ensin onko asiakas olemassa
+        fetchCustomerData(firstName, lastName)
+            .then(customer => {
+                const formattedTraining = {
+                    //muutetaan päivämäärä ISO-muotoon
+                    date: dayjs(newTraining.date, 'YYYY-MM-DDTHH:mm').toISOString(),
+                    duration: newTraining.duration,
+                    activity: newTraining.activity,
+                    customer: customer._links.self.href
+                };
+                addTraining(formattedTraining);
+                setOpen(false);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('No customer found with the given name');
+            })
     }
 
     const handleCancel = () => {

@@ -16,6 +16,7 @@ function App() {
               <NavLink to="/customers" activeclassname="active">Customers</NavLink>
               <NavLink to="/trainings" activeclassname="active">Trainings</NavLink>
               <NavLink to="/calendar" activeclassname="active">Calendar</NavLink>
+              <NavLink to="/chart" activeclassname="active">Chart</NavLink>
             </Typography>
           </Toolbar>
         </AppBar>
