@@ -110,11 +110,11 @@ export default function Customers() {
             fetch(link, { method: 'DELETE' })
                 .then(response => {
                     if (response.ok) {
-                        setSnackbarMessage("Customer deleted succesfully");
+                        setSnackbarMessage('Customer deleted succesfully');
                         setOpenSnackbar(true);
                         getCustomers();
                     } else {
-                        setSnackbarMessage("Error with deleting customer");
+                        setSnackbarMessage('Error with deleting customer');
                         setOpenSnackbar(true);
                     }
                 })

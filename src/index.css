@@ -11,11 +11,13 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-color: #531d78;
 }
 
 a {
   font-weight: 500;
-  color: #dfaeb3;
+  color: #9a65a6;;
   text-decoration: inherit;
 }
 
@@ -30,41 +32,35 @@ h1 {
 }
 
 h2 {
-  color: #747bff;
+  color: #9a65a6;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-button:hover {
-  border-color: #646cff;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+p {
+  color: #c088bd;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #339fd1;
+    color: #ecc1dc;
     background-color: #ffffff;
   }
 
   a:hover {
-    color: #747bff;
+    color: #e9acd3;
   }
 
   button {
     background-color: #f9f9f9;
   }
+}
+
+.tooltip {
+  position: absolute;
+  background-color: rgba(83, 29, 120, 1);
+  color: #e9acd3;
+  display: inline-block;
+  padding: 10px;
+  border-radius: 5px;
+  opacity: 1;
+  z-index: 1000;
 }

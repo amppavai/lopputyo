@@ -13,7 +13,6 @@ export default function Trainings() {
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const URL = 'https://customerrestservice-personaltraining.rahtiapp.fi/api/trainings';
     const gridRef = useRef();
-    const [open, setOpen] = useState(false);
 
     const [colDefs, setColDefs] = useState([
         { field: 'date', sortable: true, filter: true, flex: 1 },
@@ -43,8 +42,10 @@ export default function Trainings() {
     //haetaan ko. treeniin liittyvän asiakkaan nimi
     const fetchCustomerNames = (trainings) => {
         trainings.forEach(training => {
+            //jos treenillä on linkki asiakkaaseen, haetaan asiakkaan tiedot
             if (training._links && training._links.customer) {
                 console.log(training._links.customer.href);
+                //GET-pyyntö asiakkaan URL:iin
                 fetch(training._links.customer.href, { method: 'GET' })
                     .then(response => {
                         if (!response.ok) {
@@ -53,10 +54,12 @@ export default function Trainings() {
                         return response.json();
                     })
                     .then(customerData => {
+                        //asiakkaan tiedot lisätään treenin tietoihin
                         const updatedTrainings = {
                             ...training,
                             customer: customerData.firstname + ' ' + customerData.lastname
                         };
+                        //trainings-tila päivitetään uudella datalla, jossaon asiakkaan nimi
                         setTrainings(prevTrainings => prevTrainings.map(item => item._links.self.href === training._links.self.href ? updatedTrainings : item));
                     })
                     .catch(error => {
@@ -95,11 +98,11 @@ export default function Trainings() {
             fetch(link, { method: 'DELETE' })
                 .then(response => {
                     if (response.ok) {
-                        setSnackbarMessage("Training deleted succesfully");
+                        setSnackbarMessage('Training deleted succesfully');
                         setOpenSnackbar(true);
                         getTrainings();
                     } else {
-                        setSnackbarMessage("Error with deleting training");
+                        setSnackbarMessage('Error with deleting training');
                         setOpenSnackbar(true);
                     }
                 })
