@@ -17,7 +17,12 @@ export default function Calendar() {
 
     const fetchBookedTrainings = () => {
         fetch('https://customerrestservice-personaltraining.rahtiapp.fi/api/trainings', { method: 'GET' })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 const trainings = data._embedded.trainings;
                 fetchCustomerNames(trainings);
@@ -38,12 +43,14 @@ export default function Calendar() {
                         return response.json();
                     })
                     .then(customerData => {
-                        return {
-                            title: `${training.activity} (${customerData.firstname} ${customerData.lastname}) `,
-                            start: dayjs(training.date).format('YYYY-MM-DD HH:mm'),
-                            end: dayjs(training.date).add(training.duration, 'minutes').format('YYYY-MM-DD HH:mm'),
-                            allDay: false
-                        };
+                        if (customerData && customerData.firstname && customerData.lastname) {
+                            return {
+                                title: `${training.activity} (${customerData.firstname} ${customerData.lastname}) `,
+                                start: dayjs(training.date).format('YYYY-MM-DD HH:mm'),
+                                end: dayjs(training.date).add(training.duration, 'minutes').format('YYYY-MM-DD HH:mm'),
+                                allDay: false
+                            };
+                        }
                     })
                     .catch(error => {
                         console.error(`Error fetching customer data from ${training._links.customer.href}:`, error);
